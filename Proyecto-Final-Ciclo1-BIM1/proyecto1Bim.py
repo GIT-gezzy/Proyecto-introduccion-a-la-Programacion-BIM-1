@@ -1,11 +1,8 @@
-# Inicializando datos
 salida = ""
 reporte = ""
 multiplicador = 0
 totalSemanal = 0
 contadorDia = 0
-
-# Bandera para reemplazar un do-while
 bandera = True
 
 nombre = input("Ingrese su nombre: ")
@@ -15,15 +12,13 @@ peso = float(input("Ingrese su peso(Kg): "))
 estatura = int(input("Ingrese su estatura(cm): "))
 nivel_fisico = input("Ingrese su nivel de actividad física(Sedentario, Ligero, Moderado, Intenso, Muy intenso): ")
 
-# Cálculo TMB según género
 if genero == "Masculino":
     tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) + 5
 elif genero == "Femenino":
     tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) - 161
 else:
-    tmb = 1500  # Valor por defecto 
+    tmb = 1500  
 
-# Multiplicador según nivel físico
 if nivel_fisico == "Sedentario":
     multiplicador = 1.2
 elif nivel_fisico == "Ligero":
