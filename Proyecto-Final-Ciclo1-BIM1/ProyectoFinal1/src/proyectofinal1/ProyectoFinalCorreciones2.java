@@ -60,7 +60,7 @@ public class ProyectoFinalCorreciones2 {
                 + "Ligero (1), Moderado (2), Intenso (3), Muy intenso(4))");
         nivel_fisico = entrada.nextInt();
         entrada.nextLine();
-        //Condicional asignar valores segun el genero
+
         if (genero == 1) {
             genero_nombre = "Masculino";
             tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) + 5;
@@ -70,10 +70,10 @@ public class ProyectoFinalCorreciones2 {
                 tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) - 161;
             } else {
                 genero_nombre = "No definido";
-                tmb = 1500;  // default solicitado
+                tmb = 1500;
             }
         }
-        // Condicional para asignar multiplicador según el nivel de actividad
+        
         if (nivel_fisico == 0) {
             nivel_fisico_nombre = "Sedentario";
             multiplicador = 1.2;
@@ -95,7 +95,7 @@ public class ProyectoFinalCorreciones2 {
                             multiplicador = 1.9;
                         } else {
                             nivel_fisico_nombre = "Sin Registro";
-                            multiplicador = 1.2; // default
+                            multiplicador = 1.2;
                         }
                     }
                 }

@@ -2,43 +2,58 @@ salida = ""
 reporte = ""
 multiplicador = 0
 totalSemanal = 0
-contadorDia = 0
+contadorDia = 1
 bandera = True
 
 nombre = input("Ingrese su nombre: ")
-genero = input("Ingrese su género Masculino/Femenino: ")
+genero = int(input("Ingrese su género (1 = Masculino / 2 = Femenino): "))
 edad = int(input("Ingrese su edad: "))
 peso = float(input("Ingrese su peso(Kg): "))
 estatura = int(input("Ingrese su estatura(cm): "))
-nivel_fisico = input("Ingrese su nivel de actividad física(Sedentario, Ligero, Moderado, Intenso, Muy intenso): ")
 
-if genero == "Masculino":
+print("Ingrese su nivel de actividad física:")
+print("Sedentario (0), Ligero (1), Moderado (2), Intenso (3), Muy intenso (4)")
+nivel_fisico = int(input("Nivel: "))
+
+if genero == 1:
+    genero_nombre = "Masculino"
     tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) + 5
-elif genero == "Femenino":
+elif genero == 2:
+    genero_nombre = "Femenino"
     tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) - 161
 else:
-    tmb = 1500  
+    genero_nombre = "No definido"
+    tmb = 1500 
 
-if nivel_fisico == "Sedentario":
+if nivel_fisico == 0:
+    nivel_fisico_nombre = "Sedentario"
     multiplicador = 1.2
-elif nivel_fisico == "Ligero":
+elif nivel_fisico == 1:
+    nivel_fisico_nombre = "Ligero"
     multiplicador = 1.37
-elif nivel_fisico == "Moderado":
+elif nivel_fisico == 2:
+    nivel_fisico_nombre = "Moderado"
     multiplicador = 1.55
-elif nivel_fisico == "Intenso":
+elif nivel_fisico == 3:
+    nivel_fisico_nombre = "Intenso"
     multiplicador = 1.72
-elif nivel_fisico == "Muy intenso":
+elif nivel_fisico == 4:
+    nivel_fisico_nombre = "Muy Intenso"
     multiplicador = 1.9
 else:
-    multiplicador = 1.2 
+    nivel_fisico_nombre = "Sin Registro"
+    multiplicador = 1.2
 
 while contadorDia <= 7:
-    contadorComida = 0
+
+    contadorComida = 1
     sumaCaloriasDia = 0
+    detalleComidas = ""  
     bandera = True
 
     while bandera:
         print(f"Día-{contadorDia} Comida-{contadorComida}")
+
         nombreComida = input("Ingrese nombre de su comida: ")
         tipoComida = input("Ingrese tipo de comida: ")
         caloriasComida = int(input("Ingrese las calorías de su comida: "))
@@ -46,7 +61,11 @@ while contadorDia <= 7:
         sumaCaloriasDia = sumaCaloriasDia + caloriasComida
         contadorComida = contadorComida + 1
 
-        salida = input("Escriba 'C' para continuar ingresando comidas: ").upper()
+        detalleComidas = detalleComidas + "\t- {} ({}): {} calorías\n".format(
+            nombreComida, tipoComida, caloriasComida)
+
+        salida = input("Escriba ''C'' para continuar ingresando comidas o ''N'' para saltar al siguiente dia:")
+        salida = salida.upper()
 
         if salida == "C":
             bandera = True
@@ -54,8 +73,6 @@ while contadorDia <= 7:
             bandera = False
 
     gastoEstimadoDiario = tmb * multiplicador
-    promedioDia = sumaCaloriasDia / contadorComida
-
     balanceDia = sumaCaloriasDia - gastoEstimadoDiario
 
     if balanceDia < 0:
@@ -65,17 +82,29 @@ while contadorDia <= 7:
     else:
         estadoDieta = "Equilibrado"
 
-    reporte = "{} Día{}: Promedio Calorías= {}, Balance= {}, Estado, {}".format(
-        reporte, contadorDia, promedioDia, balanceDia, estadoDieta
-    )
+    reporte = "{}Día {}:\nCalorías Consumidas = {}\n{}Balance = {}, Estado = {}\n\n".format(
+    reporte, contadorDia, sumaCaloriasDia, detalleComidas, balanceDia, estadoDieta)
 
     totalSemanal = totalSemanal + balanceDia
-    contadorDia = contadorDia + 1
+    contadorDia = contadorDia+  1
 
 promedioSemanal = totalSemanal / 7
 
-reporte = "REPORTE SEMANAL- CONTROL DE ALIMENTACIÓN\nNombre: {}\nGénero: {}\nEdad: {}\nPeso: {}\nEstatura: {}\nTMB: {}\nNivelFísico {}\n----------------------\n{}\n---------------------\nBalance Calórico promedio semanal{}".format(
-    nombre, genero, edad, peso, estatura, tmb, nivel_fisico, reporte, promedioSemanal
-)
+if promedioSemanal < 0:
+    estadoSemanal = "Deficit"
+elif promedioSemanal > 0:
+    estadoSemanal = "Superávit"
+else:
+    estadoSemanal = "Equilibrado"
 
-print(f"{reporte}")
+reporteFinal = "REPORTE SEMANAL- CONTROL DE ALIMENTACIÓN\nNombre: {}\n" \
+"Género: {}\n" \
+"Edad: {}\n" \
+"Peso: {}\n" \
+"Estatura: {}\n" \
+"TMB: {}\n" \
+"Nivel de Actividad Física {}\n----------------------\n{}\n---------------------\n" \
+"Balance Calórico promedio semanal: {} ({})".format(
+    nombre, genero_nombre, edad, peso, estatura, tmb, nivel_fisico_nombre,
+    reporte, promedioSemanal, estadoSemanal)
+print(reporteFinal)

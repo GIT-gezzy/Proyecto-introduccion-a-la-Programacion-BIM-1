@@ -60,7 +60,7 @@ public class ProyectoFinalCorreciones {
                 + "Ligero (1), Moderado (2), Intenso (3), Muy intenso(4))");
         nivel_fisico = entrada.nextInt();
         entrada.nextLine();
-        //Condicional asignar valores segun el genero
+
         switch (genero) {
             case 1:
                 genero_nombre = "Masculino";
@@ -75,7 +75,7 @@ public class ProyectoFinalCorreciones {
                 tmb = 1500;
                 break;
         }
-        // Condicional para asignar Multiplicador segun el nivel de actividad
+
         switch (nivel_fisico) {
             case 0:
                 nivel_fisico_nombre = "Sedentario";
