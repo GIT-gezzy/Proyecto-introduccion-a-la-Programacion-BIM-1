@@ -11,7 +11,7 @@ import java.util.Scanner;
  *
  * @author Alexito
  */
-public class ProyectoFinal1 {
+public class ProyectoFinalCorreciones2 {
 
     /**
      * @param args the command line arguments
@@ -20,32 +20,35 @@ public class ProyectoFinal1 {
         Scanner entrada = new Scanner(System.in);
         entrada.useLocale(Locale.US);
         String nombre;
-        String genero;
-        String nivel_fisico;
+        String genero_nombre;
+        String nivel_fisico_nombre;
+        int genero;
+        int nivel_fisico;
         String nombreComida;
         String tipoComida;
+        String detalleComidas;
         String estadoDieta;
-        String salida = "";
+        String estadoSemanal;
+        String salida;
         String reporte = "";
         int edad;
         double peso;
         double estatura;
-        double multiplicador = 0;
+        double multiplicador;
         double tmb;
-        double gastoEstimadoDiario;
+        double gastoEstimadoDiario = 0;
         double caloriasComida;
-        double sumaCaloriasDia = 0;
-        double promedioDia;
+        double sumaCaloriasDia;
         double balanceDia;
         double totalSemanal = 0;
         double promedioSemanal;
         int contadorDia = 1;
-        int contadorComida = 0;
+        int contadorComida;
 
         System.out.println("Ingrese su nombre: ");
         nombre = entrada.nextLine();
-        System.out.println("Ingrese su genero(Maculino/Femenino): ");
-        genero = entrada.nextLine();
+        System.out.println("Ingrese su genero(Masculino = 1 / Femenino = 2): ");
+        genero = entrada.nextInt();
         System.out.println("Ingrese su edad: ");
         edad = entrada.nextInt();
         System.out.println("Ingrese su peso(Kg): ");
@@ -53,47 +56,59 @@ public class ProyectoFinal1 {
         System.out.println("Ingrese su estatura(cm): ");
         estatura = entrada.nextDouble();
         entrada.nextLine();
-        System.out.println("Ingrese su nivel de actividad física(Sedebtario, "
-                + "Ligero, Moderado, Intenso, Muy intenso)");
-        nivel_fisico = entrada.nextLine();
-
+        System.out.println("Ingrese su nivel de actividad física (Sedentario (0), "
+                + "Ligero (1), Moderado (2), Intenso (3), Muy intenso(4))");
+        nivel_fisico = entrada.nextInt();
+        entrada.nextLine();
         //Condicional asignar valores segun el genero
-        if (genero.equals("Masculino")) {
+        if (genero == 1) {
+            genero_nombre = "Masculino";
             tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) + 5;
         } else {
-            tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) - 161;
+            if (genero == 2) {
+                genero_nombre = "Femenino";
+                tmb = (10 * peso) + (6.25 * estatura) - (5 * edad) - 161;
+            } else {
+                genero_nombre = "No definido";
+                tmb = 1500;  // default solicitado
+            }
         }
-        // Condicional para asignar Multiplicador segun 
-
-        if (nivel_fisico.equals("Sedentario")) {
+        // Condicional para asignar multiplicador según el nivel de actividad
+        if (nivel_fisico == 0) {
+            nivel_fisico_nombre = "Sedentario";
             multiplicador = 1.2;
         } else {
-            if (nivel_fisico.equals("Ligero")) {
+            if (nivel_fisico == 1) {
+                nivel_fisico_nombre = "Ligero";
                 multiplicador = 1.37;
             } else {
-                if (nivel_fisico.equals("Moderado")) {
+                if (nivel_fisico == 2) {
+                    nivel_fisico_nombre = "Moderado";
                     multiplicador = 1.55;
                 } else {
-                    if (nivel_fisico.equals("Intenso")) {
+                    if (nivel_fisico == 3) {
+                        nivel_fisico_nombre = "Intenso";
                         multiplicador = 1.72;
                     } else {
-                        if (nivel_fisico.equals("Muy Intenso")) {
+                        if (nivel_fisico == 4) {
+                            nivel_fisico_nombre = "Muy Intenso";
                             multiplicador = 1.9;
+                        } else {
+                            nivel_fisico_nombre = "Sin Registro";
+                            multiplicador = 1.2; // default
                         }
                     }
                 }
-
             }
         }
 
         while (contadorDia <= 7) {
-            contadorComida = 0;
+            contadorComida = 1;
             sumaCaloriasDia = 0;
-            //agrego linea
-                System.out.printf("Dia %d\n",contadorDia);
+            detalleComidas = "";
             do {
-                //Agrego Linea
-                System.out.printf("Comida%d\n",contadorComida);
+                System.out.printf("Día-%d Comida-%d\n", contadorDia,
+                        contadorComida);
                 System.out.println("Ingrese nombre de su comida: ");
                 nombreComida = entrada.nextLine();
                 System.out.println("Ingrese tipo de comida: ");
@@ -102,13 +117,15 @@ public class ProyectoFinal1 {
                 caloriasComida = entrada.nextInt();
                 entrada.nextLine();
                 sumaCaloriasDia = sumaCaloriasDia + caloriasComida;
-                System.out.println("Escriba ´C´ para continuar ingresando comidas: ");
+                detalleComidas = String.format("%s\t- %s (%s): %.2f calorías\n",
+                        detalleComidas, nombreComida, tipoComida, caloriasComida);
+                System.out.println("Escriba ''C'' para continuar ingresando "
+                        + "comidas\nEscriba ''N'' para saltar al siguiente dia");
                 salida = entrada.nextLine();
+                salida = salida.toUpperCase();
                 contadorComida = contadorComida + 1;
             } while (salida.equals("C"));
             gastoEstimadoDiario = tmb * multiplicador;
-//            promedioDia = sumaCaloriasDia / (contadorComida - 1);
-            promedioDia = sumaCaloriasDia / contadorComida;
             balanceDia = sumaCaloriasDia - gastoEstimadoDiario;
             if (balanceDia < 0) {
                 estadoDieta = "Deficit";
@@ -119,25 +136,38 @@ public class ProyectoFinal1 {
                     estadoDieta = "Equilibrado";
                 }
             }
-            reporte = String.format("%sDía %d: Promedio Calorías= %.2f, Balance="
-                    + "%.2f, Estado= %s\n",reporte,contadorDia,promedioDia,balanceDia,estadoDieta );
+            reporte = String.format("%sDía %d:\nCalorías Consumidas = %.2f\n%s"
+                    + "Balance = %.2f, Estado = %s\n\n",
+                    reporte, contadorDia, sumaCaloriasDia, detalleComidas,
+                    balanceDia, estadoDieta);
             totalSemanal = totalSemanal + balanceDia;
             contadorDia = contadorDia + 1;
         }
         promedioSemanal = totalSemanal / 7;
+        if (promedioSemanal < 0) {
+            estadoSemanal = "Deficit";
+        } else {
+            if (promedioSemanal > 0) {
+                estadoSemanal = "Superávit";
+            } else {
+                estadoSemanal = "Equilibrado";
+            }
+        }
         reporte = String.format("REPORTE SEMANAL - CONTROL DE ALIMENTACIÓN\n"
                 + "Nombre: %s\n"
                 + "Género: %s\n"
-                + "Edad:%d\n"
-                + "Peso: %.2f"
+                + "Edad: %d\n"
+                + "Peso: %.2f\n"
                 + "Estatura: %.2f\n"
                 + "TMB: %.2f\n"
-                + "Nivel Físico: %s\n"
+                + "Nivel de Actividad Física: %s\n"
+                + "Gasto Estimado diario (Segun su actividad física): %.2f\n"
                 + "------------------\n"
                 + "%s"
                 + "-------------------\n"
-                + "Balance calórico promedio semanal:  %.2f",nombre,genero,edad,
-                peso,estatura,tmb,nivel_fisico,reporte,promedioSemanal);
+                + "Balance calórico promedio semanal: %.2f (%s)", nombre,
+                genero_nombre, edad, peso, estatura, tmb, nivel_fisico_nombre,
+                gastoEstimadoDiario, reporte, promedioSemanal, estadoSemanal);
         System.out.printf("%s", reporte);
     }
 }
